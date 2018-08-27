@@ -4,12 +4,11 @@ import { createLogger } from 'redux-logger'
 import rootReducer from '../reducers'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-const middleware = [thunk];
 // For development
 const loggerMiddleware = createLogger();
 
 const enhancer = composeWithDevTools(
-    applyMiddleware(thunk, createLogger()),
+    applyMiddleware(thunk, loggerMiddleware),
 );
 
 export default function configStore(initialState) {
