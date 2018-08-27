@@ -1,6 +1,7 @@
 {
   "name": "redux-app",
   "version": "0.1.0",
+  "homepage" : "http://myname.github.io/myapp",
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
