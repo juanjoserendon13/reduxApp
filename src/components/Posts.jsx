@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchPosts } from '../actions/postActions'
+import * as postActions from '../actions/postActions'
 
 export class Posts extends Component {
     async componentWillMount() {
-        await this.props.fetchPosts();
+        const { postActions } = this.props;
+        await postActions.fetchPosts();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,7 +34,7 @@ export class Posts extends Component {
 }
 
 Posts.propTypes = {
-    fetchPosts: PropTypes.func.isRequired,
+    postActions: PropTypes.objectOf(PropTypes.func).isRequired,
     posts: PropTypes.array.isRequired,
     newPost: PropTypes.object
 }
@@ -42,4 +44,8 @@ const mapStateToProps = state => ({
     newPost: state.posts.item
 })
 
-export default connect(mapStateToProps, { fetchPosts })(Posts);
+const mapDispatchToProps = dispatch => ({
+    postActions: bindActionCreators(postActions, dispatch),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
