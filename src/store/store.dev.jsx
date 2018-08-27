@@ -13,7 +13,5 @@ const enhancer = composeWithDevTools(
 );
 
 export default function configStore(initialState) {
-    return createStore(rootReducer,
-        initialState,
-        enhancer);
+    return createStore(rootReducer, initialState, enhancer);
 }
