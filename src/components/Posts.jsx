@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { fetchPosts } from '../actions/postActions'
 
 export class Posts extends Component {
-    componentWillMount() {
-        this.props.fetchPosts();
+    async componentWillMount() {
+        await this.props.fetchPosts();
     }
 
     componentWillReceiveProps(nextProps) {

@@ -1,12 +1,25 @@
-import { FETCH_POSTS, NEW_POSTS } from './types';
+import { FETCH_POSTS, NEW_POSTS, FETCH_PRODUCTS_INIT } from './types';
 
-export const fetchPosts = () => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(res => res.json())
-        .then(posts => dispatch({
-            type: FETCH_POSTS,
-            payload: posts
-        }));
+import API from '../api';
+
+// ----- Actions creators
+export function fetchProductsSuccess(posts) {
+    return {
+        type: FETCH_POSTS,
+        payload: posts,
+    };
+}
+
+export const fetchPosts = () => async dispatch => {
+    dispatch(() => ({
+        type: FETCH_PRODUCTS_INIT,
+    }));
+    try {
+        const data = await API.products.getAll();
+        return dispatch(fetchProductsSuccess(data));
+    } catch (error) {
+        return console.log("error");
+    }
 }
 
 export const createPost = (postData) => dispatch => {
