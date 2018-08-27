@@ -1,38 +1,65 @@
-import { FETCH_POSTS, NEW_POSTS, FETCH_PRODUCTS_INIT } from './types';
+import {
+    FETCH_POSTS_SUCCESS,
+    FETCH_POSTS_FAILURE,
+    NEW_POST_SUCCESS,
+    NEW_POST_FAILURE,
+    FETCH_POSTS_INIT,
+    NEW_POST_INIT
+} from './types';
 
 import API from '../api';
 
 // ----- Actions creators
-export function fetchProductsSuccess(posts) {
+export const fetchPostsInit = () => ({ type: FETCH_POSTS_INIT });
+
+export function fetchPostsSuccess(posts) {
     return {
-        type: FETCH_POSTS,
+        type: FETCH_POSTS_SUCCESS,
         payload: posts,
     };
 }
 
+export function fetchPostsFailure(error) {
+    return {
+        type: FETCH_POSTS_FAILURE,
+        payload: error,
+    };
+}
+
+export const createPostInit = () => ({ type: NEW_POST_INIT });
+
+export function createPostSuccess(post) {
+    return {
+        type: NEW_POST_SUCCESS,
+        payload: post
+    };
+}
+
+export function createPostFailure(error) {
+    return {
+        type: NEW_POST_FAILURE,
+        payload: error
+    };
+}
+
+// ----- Async actions
 export const fetchPosts = () => async dispatch => {
-    dispatch(() => ({
-        type: FETCH_PRODUCTS_INIT,
-    }));
+    // ----- Initial call, preparing the app
+    dispatch(fetchPostsInit());
     try {
-        const data = await API.products.getAll();
-        return dispatch(fetchProductsSuccess(data));
+        const data = await API.posts.getAll();
+        return dispatch(fetchPostsSuccess(data));
     } catch (error) {
-        return console.log("error");
+        return dispatch(fetchPostsFailure(error));
     }
 }
 
-export const createPost = (postData) => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-    })
-        .then(res => res.json())
-        .then(post => dispatch({
-            type: NEW_POSTS,
-            payload: post
-        }));
+export const createPost = (postData) => async dispatch => {
+    dispatch(createPostInit());
+    try {
+        const data = await API.posts.createOne(postData);
+        return dispatch(createPostSuccess(data));
+    } catch (error) {
+        return dispatch(createPostFailure(error));
+    }
 }

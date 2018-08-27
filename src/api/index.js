@@ -3,19 +3,14 @@ import fetch from 'isomorphic-fetch'
 const baseURL = 'https://jsonplaceholder.typicode.com';
 
 const API = {
-    products: {
+    posts: {
         async getAll() {
             const response = await fetch(`${baseURL}/posts`);
             const data = await response.json();
             return data;
         },
-        async getSinlge(id) {
-            const response = await fetch(`${baseURL}/products/${id}`);
-            const data = await response.json();
-            return data;
-        },
-        async save(item) {
-            const response = await fetch(`${baseURL}/products/`, {
+        async createOne(item) {
+            const response = await fetch(`${baseURL}/posts`, {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json',
