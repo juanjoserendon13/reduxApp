@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Posts from './components/Posts';
 import PostForm from './components/PostForm';
 import { Provider } from 'react-redux';
-import './index.css';
 
 import configureStore from './store/configStore';
 import initialState from './reducers/initialState';
